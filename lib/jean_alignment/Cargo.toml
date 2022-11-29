@@ -1,0 +1,7 @@
+[package]
+edition = "2021"
+name = "jean_alignment"
+version = "0.1.0"
+
+[dependencies]
+num-traits = "0.2.15"

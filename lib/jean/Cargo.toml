@@ -1,0 +1,20 @@
+[package]
+edition = "2021"
+name = "jean"
+version = "0.1.0"
+
+[dependencies]
+jean_alignment = {version = "0.1.0", optional = true, path = "../jean_alignment"}
+jean_core = {version = "0.1.0", path = "../jean_core"}
+jean_io = {version = "0.1.0", optional = true, path = "../jean_io"}
+jean_macros = {version = "0.1.0", optional = true, path = "../jean_macros"}
+
+[dev-dependencies]
+jean_alignment = {version = "0.1.0", path = "../jean_alignment"}
+jean_io = {version = "0.1.0", path = "../jean_io"}
+jean_macros = {version = "0.1.0", path = "../jean_macros"}
+
+[features]
+alignment = ["jean_alignment"]
+io = ["jean_io"]
+macros = ["jean_macros"]

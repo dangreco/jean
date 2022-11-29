@@ -1,0 +1,10 @@
+[package]
+edition = "2021"
+name = "jean_core"
+version = "0.1.0"
+
+[dependencies]
+lazy_static = "1.4.0"
+logos = "0.12.1"
+logos-derive = "0.12.1"
+num-traits = "0.2.15"

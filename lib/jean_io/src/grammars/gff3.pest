@@ -1,0 +1,37 @@
+WHITESPACE = _{ " " | "\t" }
+
+A = @{ ASCII_ALPHANUMERIC }
+
+rest = { ANY* }
+
+str = _{ string | nstring }
+	string = @{ (!(NEWLINE | "\t") ~ ANY)+ }
+  nstring = @{ (!(WHITESPACE | NEWLINE) ~ ANY)+ }
+
+num = _{ float | int }
+    int = @{ ASCII_DIGIT+ }
+    float = @{ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* }
+  
+    
+version = @{ (int ~ "."){2,} ~ int }
+    
+val = _{ none | version | num | string }
+	none = @{ "." }
+
+com = _{ directive | comment }
+  comment = ${ "#"{1} ~ str? } 
+  directive = { "#"{2} ~ (gff_version | sequence_region | ontology | species | fasta | str) }
+  	gff_version = { "gff-version" ~ version }
+    sequence_region = { "sequence-region" ~  nstring ~ int  ~ int }
+    ontology = _{ feature_ontology | attribute_ontology | source_ontology }
+      feature_ontology = { "feature-ontology" ~ val }
+      attribute_ontology = { "attribute-ontology" ~ val }
+      source_ontology = { "source-ontology" ~ val }
+    species = { "species" ~ val }
+    fasta = { "FASTA" ~ NEWLINE ~ rest }
+  
+record = { nstring ~ (none | string) ~ nstring ~ int ~ int ~ (none | num) ~ (none | nstring) ~ (none | int) ~ (none | string) }
+
+item = _{ com | record } 
+  
+file = { SOI ~ (item | NEWLINE)* ~ item? ~ EOI }

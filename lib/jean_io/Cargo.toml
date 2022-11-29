@@ -1,0 +1,12 @@
+[package]
+edition = "2021"
+name = "jean_io"
+version = "0.1.0"
+
+[dependencies]
+anyhow = "1.0.66"
+lazy_static = "1.4.0"
+num-traits = "0.2.15"
+pest = "2.5.0"
+pest_derive = "2.5.0"
+jean_core = {path = "../jean_core"}
