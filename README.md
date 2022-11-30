@@ -46,8 +46,9 @@ $ cargo add jean # --features io,...
   </tbody>
 </table>
 
-## Example (DNA Sequence Alignment)
+## Examples
 
+### DNA Sequence Alignment
 ```rust
 #[macro_use]
 extern crate jean;
@@ -74,6 +75,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   assert_eq!(score, 16.0);
   assert_eq!(alignment.a(), &dna!("--AGACTAGTTAC"));
   assert_eq!(alignment.b(), &dna!("CGAGAC--G-T--"));
+
+  Ok(())
+}
+```
+
+### DNA -> RNA -> Protein
+```rust
+#[macro_use]
+extern crate jean;
+
+use jean::{cut::Cut, dna::Dna, prelude::*, protein::Protein, rna::Rna};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+  let path = std::path::PathBuf::from("homo_sapien.cut");
+  let cut = Cut::read_file(&path)?;
+
+  /* DNA -> RNA -> Protein */
+  let d: Dna = dna!("AGGCTGGGCACC");
+  let r: Rna = d.transcribe();
+  let p: Protein = r.translate(&cut);
+
+  assert_eq!(p, protein!("RLGT"));
+
+  /* ...and back again */
+  let r_ = p.rev_translate(&cut);
+  let d_ = r_.rev_transcribe();
+
+  assert_eq!(d, d_);
 
   Ok(())
 }

@@ -14,16 +14,17 @@ pub use jean_core::sequence::*;
 pub use jean_macros::*;
 /* ---- END CRATE ROOT ---- */
 
-/* ---- BEGIN PRELUDE ---- */
-pub use jean_core::prelude::*;
-pub use jean_cut::prelude::*;
+/// Trait definitions
+pub mod prelude {
+  pub use jean_core::prelude::*;
+  pub use jean_cut::prelude::*;
 
-#[cfg(feature = "jean_io")]
-pub use jean_io::prelude::*;
+  #[cfg(feature = "jean_io")]
+  pub use jean_io::prelude::*;
 
-#[cfg(feature = "jean_alignment")]
-pub use jean_alignment::prelude::*;
-/* ---- END PRELUDE ---- */
+  #[cfg(feature = "jean_alignment")]
+  pub use jean_alignment::prelude::*;
+}
 
 /// Codon usage tables (codon frequency tables)
 pub mod cut {

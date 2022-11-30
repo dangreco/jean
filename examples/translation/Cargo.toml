@@ -1,0 +1,7 @@
+[package]
+edition = "2021"
+name = "translation"
+version = "0.1.0"
+
+[dependencies]
+jean = {version = "0.1.0", path = "../../lib/jean", features = ["macros"]}
