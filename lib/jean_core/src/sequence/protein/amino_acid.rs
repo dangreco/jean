@@ -1,9 +1,12 @@
 use num_enum::{FromPrimitive, IntoPrimitive};
+use strum_macros::EnumCount;
 
 use crate::prelude::Gap;
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive)]
+#[derive(
+  Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive, EnumCount,
+)]
 pub enum AminoAcid {
   A,
   B,

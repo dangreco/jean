@@ -1,4 +1,5 @@
 use num_enum::{IntoPrimitive, FromPrimitive};
+use strum_macros::EnumCount;
 
 use crate::{
   prelude::{Complement, Transcribe, Gap},
@@ -6,7 +7,7 @@ use crate::{
 };
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive, EnumCount)]
 pub enum Base {
   A,
   C,

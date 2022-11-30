@@ -1,18 +1,20 @@
 use num_enum::{FromPrimitive, IntoPrimitive};
+use strum_macros::EnumCount;
 
 use crate::{
-  prelude::{Complement, Transcribe, Gap},
+  prelude::{Complement, Gap, Transcribe},
   sequence::rna,
 };
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive)]
+#[derive(
+  Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive, EnumCount,
+)]
 pub enum Base {
   A,
   C,
   G,
   T,
-
   #[default]
   GAP,
 }

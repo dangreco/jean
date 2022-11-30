@@ -1,7 +1,9 @@
 use std::fmt::Debug;
 
+use anyhow::{anyhow, Context, Result};
 use jean_core::{prelude::Gap, sequence::Seq};
-use num_traits::{FromPrimitive, Num};
+use num_traits::real::Real;
+use strum::EnumCount;
 
 #[derive(Debug, Clone)]
 pub struct Alignment<T>((Seq<T>, Seq<T>));
@@ -19,7 +21,7 @@ impl<T> Alignment<T> {
 #[derive(Debug, Clone)]
 pub struct NeedlemanWunsch<N>
 where
-  N: Num,
+  N: Real,
 {
   similarity_matrix: Vec<Vec<N>>,
   gap_penalty: N,
@@ -31,7 +33,7 @@ static INSERT: u8 = 0b00000100;
 
 impl<N> NeedlemanWunsch<N>
 where
-  N: Num + Clone + Copy,
+  N: Real + Clone + Copy,
 {
   pub fn new() -> Self {
     Self {
@@ -40,9 +42,32 @@ where
     }
   }
 
-  pub fn similarity_matrix(mut self, similarity_matrix: Vec<Vec<N>>) -> Self {
+  pub fn similarity_matrix<T>(mut self, similarity_matrix: Vec<Vec<N>>) -> Result<Self>
+  where
+    T: EnumCount + Gap,
+  {
+    let n = similarity_matrix.len();
+    let m = similarity_matrix.get(0).unwrap_or(&vec![]).len();
+    let t = T::COUNT - 1;
+
+    if n != t {
+      return Err(anyhow!(
+        "Invalid similarity matrix dimension (rows): got {}, expected {}.",
+        n,
+        t
+      ));
+    }
+
+    if m != T::COUNT - 1 {
+      return Err(anyhow!(
+        "Invalid similarity matrix dimension (cols): got {}, expected {}.",
+        m,
+        t
+      ));
+    }
+
     self.similarity_matrix = similarity_matrix;
-    self
+    Ok(self)
   }
 
   pub fn gap_penalty(mut self, gap_penalty: N) -> Self {
@@ -50,9 +75,8 @@ where
     self
   }
 
-  pub fn align<T>(self, a: &Seq<T>, b: &Seq<T>) -> (N, Alignment<T>)
+  pub fn align<T>(self, a: &Seq<T>, b: &Seq<T>) -> Result<(N, Alignment<T>)>
   where
-    N: FromPrimitive + PartialOrd + Debug,
     u8: From<T>,
     T: From<u8> + Copy + Gap,
   {
@@ -63,30 +87,25 @@ where
     let mut traces = vec![vec![u8::default(); m]; n];
 
     for i in 0..n {
-      scores[i][0] = N::from_usize(i).unwrap() * self.gap_penalty;
+      scores[i][0] = N::from(i).context("usize -> N")? * self.gap_penalty;
       traces[i][0] = DELETE;
     }
 
     for j in 0..m {
-      scores[0][j] = N::from_usize(j).unwrap() * self.gap_penalty;
+      scores[0][j] = N::from(j).context("usize -> N")? * self.gap_penalty;
       traces[0][j] = INSERT;
     }
 
     for i in 1..n {
-      let ai: u8 = a[i - 1].into();
+      let ai = u8::from(a[i - 1]) as usize;
       for j in 1..m {
-        let bj: u8 = b[j - 1].into();
+        let bj = u8::from(b[j - 1]) as usize;
 
-        let _m = scores[i - 1][j - 1] + self.similarity_matrix[ai as usize][bj as usize];
+        let _m = scores[i - 1][j - 1] + self.similarity_matrix[ai][bj];
         let _d = scores[i - 1][j] + self.gap_penalty;
         let _i = scores[i][j - 1] + self.gap_penalty;
 
-        let opts = vec![_m, _d, _i];
-
-        let max = *opts
-          .iter()
-          .max_by(|a, b| a.partial_cmp(b).unwrap())
-          .unwrap();
+        let max = _m.max(_d.max(_i));
 
         scores[i][j] = max;
 
@@ -131,41 +150,44 @@ where
       }
     }
 
-    (score, Alignment((aa, ba)))
+    Ok((score, Alignment((aa, ba))))
   }
 }
 
 #[cfg(test)]
 mod tests {
   use crate::NeedlemanWunsch;
-  use jean_core::sequence::dna::Dna;
+  use anyhow::Result;
+  use jean_core::sequence::dna::{self, Dna};
 
   #[test]
-  fn test_1() {
+  fn test_1() -> Result<()> {
     let nw = NeedlemanWunsch::new()
-      .similarity_matrix(vec![
-        vec![1, -1, -1, -1],
-        vec![-1, 1, -1, -1],
-        vec![-1, -1, 1, -1],
-        vec![-1, -1, -1, 1],
-      ])
-      .gap_penalty(-1);
+      .similarity_matrix::<dna::Base>(vec![
+        vec![1.0, -1.0, -1.0, -1.0],
+        vec![-1.0, 1.0, -1.0, -1.0],
+        vec![-1.0, -1.0, 1.0, -1.0],
+        vec![-1.0, -1.0, -1.0, 1.0],
+      ])?
+      .gap_penalty(-1.0);
 
     let seq1: Dna = Dna::try_from("GCATGCG").unwrap();
     let seq2: Dna = Dna::try_from("GATTACA").unwrap();
 
-    let (score, alignment) = nw.align(&seq1, &seq2);
+    let (score, alignment) = nw.align(&seq1, &seq2)?;
 
     let seq1_aligned: Dna = Dna::try_from("GCA-TGCG").unwrap();
     let seq2_aligned: Dna = Dna::try_from("G-ATTACA").unwrap();
 
-    assert_eq!(score, 0);
+    assert_eq!(score, 0.0);
     assert_eq!(alignment.a(), &seq1_aligned);
     assert_eq!(alignment.b(), &seq2_aligned);
+
+    Ok(())
   }
 
   #[test]
-  fn test_2() {
+  fn test_2() -> Result<()> {
     let seq1: Dna = Dna::try_from("AGACTAGTTAC").unwrap();
     let seq2: Dna = Dna::try_from("CGAGACGT").unwrap();
 
@@ -173,19 +195,21 @@ mod tests {
     let seq2_aligned: Dna = Dna::try_from("CGAGAC--G-T--").unwrap();
 
     let (score, alignment) = NeedlemanWunsch::new()
-      .similarity_matrix(vec![
-        vec![5, -5, -5, -5],
-        vec![-5, 5, -5, -5],
-        vec![-5, -5, 5, -5],
-        vec![-5, -5, -5, 5],
-      ])
-      .gap_penalty(-2)
-      .align(&seq1, &seq2);
+      .similarity_matrix::<dna::Base>(vec![
+        vec![5.0, -5.0, -5.0, -5.0],
+        vec![-5.0, 5.0, -5.0, -5.0],
+        vec![-5.0, -5.0, 5.0, -5.0],
+        vec![-5.0, -5.0, -5.0, 5.0],
+      ])?
+      .gap_penalty(-2.0)
+      .align(&seq1, &seq2)?;
 
     println!("{:?}", alignment);
 
-    assert_eq!(score, 16);
+    assert_eq!(score, 16.0);
     assert_eq!(alignment.a(), &seq1_aligned);
     assert_eq!(alignment.b(), &seq2_aligned);
+
+    Ok(())
   }
 }

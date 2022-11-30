@@ -4,6 +4,9 @@ name = "jean_alignment"
 version = "0.1.0"
 
 [dependencies]
+anyhow = "1.0.66"
 jean_core = {version = "0.1.0", path = "../jean_core"}
 num-traits = "0.2.15"
 num_enum = "0.5.7"
+strum = "0.24.1"
+strum_macros = "0.24.3"
