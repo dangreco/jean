@@ -10,3 +10,6 @@ num-traits = "0.2.15"
 num_enum = "0.5.7"
 strum = "0.24.1"
 strum_macros = "0.24.3"
+
+[dev-dependencies]
+rand = "0.8.5"

@@ -1,9 +1,6 @@
 use std::fmt::Display;
 
-use crate::{data::cut::Cut, prelude::Translate};
-
 use super::{
-  protein::AminoAcid,
   rna::{self, Rna},
   Seq,
 };
@@ -101,12 +98,5 @@ impl TryFrom<Codon> for Rna {
     };
 
     Ok(Seq(vec![b0, b1, b2]))
-  }
-}
-
-impl Translate<AminoAcid> for Codon {
-  fn translate(&self, table_id: &str) -> Result<AminoAcid, String> {
-    let cut = Cut::get(table_id)?;
-    cut.translate(&self)
   }
 }

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use jean_io::gff3::Gff3;
+use jean_io::formats::gff3::Gff3;
 
 #[test]
 fn test_read() {

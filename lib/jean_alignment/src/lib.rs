@@ -1,5 +1,2 @@
-mod needleman_wunsch;
-
+pub mod alignment;
 pub mod prelude;
-
-pub use needleman_wunsch::*;

@@ -6,6 +6,7 @@ version = "0.1.0"
 [dependencies]
 jean_alignment = {version = "0.1.0", optional = true, path = "../jean_alignment"}
 jean_core = {version = "0.1.0", path = "../jean_core"}
+jean_cut = {version = "0.1.0", path = "../jean_cut"}
 jean_io = {version = "0.1.0", optional = true, path = "../jean_io"}
 jean_macros = {version = "0.1.0", optional = true, path = "../jean_macros"}
 

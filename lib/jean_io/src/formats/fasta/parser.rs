@@ -1,8 +1,5 @@
 use std::collections::HashMap;
-
-use crate::fasta::token::Token;
-
-use super::{entry::Entry, lexer::FastaLexer};
+use super::{entry::Entry, lexer::FastaLexer, token::Token};
 use anyhow::Result;
 use jean_core::sequence::Sequence;
 

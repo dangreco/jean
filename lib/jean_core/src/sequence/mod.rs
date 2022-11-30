@@ -1,12 +1,20 @@
 mod seq;
 
+/// DNA/RNA codons (e.g. AAA, TAG, ATG)
 pub mod codon;
+
+/// DNA sequences + bases
 pub mod dna;
+
+/// Protein sequences + amino acids
 pub mod protein;
+
+/// RNA sequences + bases
 pub mod rna;
 
 pub use seq::*;
 
+/// Enum for differentiating between DNA, RNA, and Protein sequences
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Sequence {
   Dna(Seq<dna::Base>),

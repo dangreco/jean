@@ -3,6 +3,7 @@ use std::fmt::Display;
 use crate::prelude::Complement;
 use num_traits::Float;
 
+/// General struct for a linear sequence `Seq<T>` - wrapper around `Vec<T>`
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Seq<T>(pub Vec<T>);
 
@@ -23,13 +24,11 @@ impl<T> Seq<T> {
     self.0.iter_mut()
   }
 
-  pub fn push(&mut self, t: T) 
-  {
+  pub fn push(&mut self, t: T) {
     self.0.push(t)
   }
 
-  pub fn insert(&mut self, index: usize, t: T) 
-  {
+  pub fn insert(&mut self, index: usize, t: T) {
     self.0.insert(index, t)
   }
 
@@ -99,6 +98,21 @@ impl<T, I: std::slice::SliceIndex<[T]>> std::ops::Index<I> for Seq<T> {
 impl<T, I: std::slice::SliceIndex<[T]>> std::ops::IndexMut<I> for Seq<T> {
   fn index_mut(&mut self, index: I) -> &mut Self::Output {
     &mut self.0[index]
+  }
+}
+
+impl<T> From<Vec<T>> for Seq<T> {
+  fn from(value: Vec<T>) -> Self {
+    Self(value)
+  }
+}
+
+impl<'a, T> From<&'a Vec<T>> for Seq<T>
+where
+  T: Clone,
+{
+  fn from(value: &'a Vec<T>) -> Self {
+    Self(value.to_vec())
   }
 }
 

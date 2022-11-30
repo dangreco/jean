@@ -1,3 +1,4 @@
+/// Codon from string literal
 #[macro_export]
 macro_rules! codon {
   ($l:literal) => {{
@@ -5,6 +6,7 @@ macro_rules! codon {
   }};
 }
 
+/// `Dna` from string literal
 #[macro_export]
 macro_rules! dna {
   ($l:literal) => {{
@@ -12,6 +14,7 @@ macro_rules! dna {
   }};
 }
 
+/// `Protein` from string literal
 #[macro_export]
 macro_rules! protein {
   ($l:literal) => {{
@@ -19,6 +22,7 @@ macro_rules! protein {
   }};
 }
 
+/// `Rna` from string literal
 #[macro_export]
 macro_rules! rna {
   ($l:literal) => {{

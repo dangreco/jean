@@ -84,6 +84,18 @@ impl TryFrom<char> for AminoAcid {
   }
 }
 
+impl TryFrom<&str> for AminoAcid {
+  type Error = String;
+
+  fn try_from(value: &str) -> Result<Self, Self::Error> {
+    if value.len() != 1 {
+      Err(format!("Must contain only 1 character."))
+    } else {
+      Self::try_from(value.chars().next().unwrap())
+    }
+  }
+}
+
 impl From<AminoAcid> for char {
   fn from(amino_acid: AminoAcid) -> Self {
     match amino_acid {
@@ -116,5 +128,11 @@ impl From<AminoAcid> for char {
       AminoAcid::TSTOP => '*',
       AminoAcid::GAP => '-',
     }
+  }
+}
+
+impl std::fmt::Display for AminoAcid {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}", char::from(*self))
   }
 }

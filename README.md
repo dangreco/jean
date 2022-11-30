@@ -53,7 +53,7 @@ $ cargo add jean # --features io,...
 extern crate jean;
 
 use jean::{
-  alignment::NeedlemanWunsch,
+  alignment::global::NeedlemanWunsch,
   dna::{Base, Dna},
 };
 

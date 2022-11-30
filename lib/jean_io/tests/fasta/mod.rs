@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use jean_io::fasta::Fasta;
+use jean_io::formats::fasta::Fasta;
 
 #[test]
 fn test_read() {
