@@ -1,0 +1,19 @@
+WHITESPACE = _{ " " | "\t" | "\r\n" | "\n" }
+HEADER = _{ "CODON" ~ "AMINO ACID" ~ "FRACTION" ~ "FREQUENCY" ~ "NUMBER" }
+
+float = @{ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* }
+int = @{ ASCII_DIGIT+ }
+
+none = @{ "." }
+
+codon = @{ base{3} }
+  base = _{ "A" | "C" | "G" | "T" | "U" }
+
+amino_acid = @{ ASCII_ALPHA_UPPER | "*" | none }
+fraction = _{ float | none }
+frequency = _{ float | none }
+number = _{ int | none }
+
+entry = { codon ~ amino_acid ~ fraction ~ frequency ~ number }
+
+file = { SOI ~ HEADER? ~ entry* ~ EOI }
