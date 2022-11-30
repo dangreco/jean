@@ -1,15 +1,26 @@
+use num_enum::{FromPrimitive, IntoPrimitive};
+
 use crate::{
-  prelude::{Complement, Transcribe},
+  prelude::{Complement, Transcribe, Gap},
   sequence::rna,
 };
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[repr(u8)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive)]
 pub enum Base {
   A,
   C,
   G,
   T,
+
+  #[default]
   GAP,
+}
+
+impl Gap for Base {
+  fn gap() -> Self {
+    Self::GAP
+  }
 }
 
 impl TryFrom<char> for Base {

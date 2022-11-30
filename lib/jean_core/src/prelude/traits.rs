@@ -15,3 +15,7 @@ pub trait Translate<T> {
 pub trait Codons {
   fn codons(&self) -> Seq<Codon>;
 }
+
+pub trait Gap {
+  fn gap() -> Self;
+}

@@ -1,4 +1,9 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+use num_enum::{FromPrimitive, IntoPrimitive};
+
+use crate::prelude::Gap;
+
+#[repr(u8)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, IntoPrimitive, FromPrimitive)]
 pub enum AminoAcid {
   A,
   B,
@@ -27,7 +32,15 @@ pub enum AminoAcid {
   Z,
   X,
   TSTOP,
+
+  #[default]
   GAP,
+}
+
+impl Gap for AminoAcid {
+  fn gap() -> Self {
+    Self::GAP
+  }
 }
 
 impl TryFrom<char> for AminoAcid {

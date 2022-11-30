@@ -14,3 +14,10 @@ pub mod io {
   pub use jean_io::gff3;
   pub use jean_io::prelude::*;
 }
+
+#[cfg(feature = "jean_alignment")]
+extern crate jean_alignment;
+#[cfg(feature = "jean_alignment")]
+pub mod alignment {
+  pub use jean_alignment::*;
+}

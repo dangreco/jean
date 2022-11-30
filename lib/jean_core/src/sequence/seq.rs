@@ -23,6 +23,16 @@ impl<T> Seq<T> {
     self.0.iter_mut()
   }
 
+  pub fn push(&mut self, t: T) 
+  {
+    self.0.push(t)
+  }
+
+  pub fn insert(&mut self, index: usize, t: T) 
+  {
+    self.0.insert(index, t)
+  }
+
   pub fn frequencies<F>(&self) -> std::collections::BTreeMap<&T, F>
   where
     F: Float,
