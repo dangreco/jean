@@ -4,7 +4,7 @@ extern crate jean;
 use std::path::PathBuf;
 use anyhow::Result;
 
-use jean::prelude::Transcribe;
+use jean::Transcribe;
 use jean_cut::prelude::*;
 use jean_cut::cut::Cut;
 
