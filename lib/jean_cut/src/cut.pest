@@ -1,6 +1,4 @@
-WHITESPACE = _{ " " | "\t" | "\r\n" | "\n" }
-HEADER = _{ "CODON" ~ "AMINO ACID" ~ "FRACTION" ~ "FREQUENCY" ~ "NUMBER" }
-
+WHITESPACE = _{ " " | "\t" | "\r\n" | "\n" | ")" | "(" }
 float = @{ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* }
 int = @{ ASCII_DIGIT+ }
 
@@ -16,4 +14,4 @@ number = _{ int | none }
 
 entry = { codon ~ amino_acid ~ fraction ~ frequency ~ number }
 
-file = { SOI ~ HEADER? ~ entry* ~ EOI }
+file = { SOI ~ entry* ~ EOI }

@@ -63,7 +63,7 @@ impl CutParser {
         };
 
         let frequency = match parsed[3] {
-          Value::Float(frequency) => Some(frequency),
+          Value::Float(frequency) => Some(frequency * 1000.0),
           Value::None => None,
           _ => panic!("Invalid frequency value: '{}'", inner[3].as_str()),
         };
@@ -118,7 +118,7 @@ mod tests {
 
   #[test]
   fn test_1() -> Result<()> {
-    let str = "CODON AMINO ACID FRACTION FREQUENCY NUMBER\nAAA A 1.0 1.0 100";
+    let str = "AAA A 1.0 1.0 100";
     let parsed = CutParser::parse_str(str);
 
     assert!(parsed.is_ok());
