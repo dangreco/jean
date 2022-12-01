@@ -5,18 +5,7 @@ use jean_core::{prelude::Gap, sequence::Seq};
 use num_traits::real::Real;
 use strum::EnumCount;
 
-#[derive(Debug, Clone)]
-pub struct Alignment<T>((Seq<T>, Seq<T>));
-
-impl<T> Alignment<T> {
-  pub fn a(&self) -> &Seq<T> {
-    &self.0 .0
-  }
-
-  pub fn b(&self) -> &Seq<T> {
-    &self.0 .1
-  }
-}
+use super::Alignment;
 
 #[derive(Debug, Clone)]
 pub struct NeedlemanWunsch<N>
@@ -150,7 +139,7 @@ where
       }
     }
 
-    Ok((score, Alignment((aa, ba))))
+    Ok((score, Alignment::new(aa, ba)))
   }
 }
 
