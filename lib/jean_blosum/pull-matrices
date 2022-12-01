@@ -7,13 +7,16 @@ then
   exit 1
 fi
 
-# Create tmp folder
+# Create folders
 tmp="$(mktemp -d "${TMPDIR:-/tmp}"/tmp.XXXXXXXX)"
 out=src
+mkdir -p $out/matrices
 
 # Download latest BLOSUM matrices
 wget -q --show-progress --cut-dirs=3 --reject cdi,matrices,tar.gz --directory-prefix=$tmp -r -nH -nc ftp://ftp.ncbi.nlm.nih.gov/blast/matrices
 
-mkdir -p $out/matrices
-
+# Run codegen code
 cargo run --features codegen $tmp
+
+# Format source files
+rustfmt src/**/*
