@@ -44,8 +44,8 @@ $ cargo add jean # --features io,...
       </td>
     </tr>
     <tr>
-      <td><code>blast</code></td>
-      <td>BLAST (basic local alignment search tool)</td>
+      <td><code>bolsum</code></td>
+      <td>BOLSUM substitution matrices</td>
       <td>
         (<a href="">Documentation</a>)
       </td>
