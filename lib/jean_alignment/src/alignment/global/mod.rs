@@ -64,7 +64,7 @@ where
     self
   }
 
-  pub fn align<T>(self, a: &Seq<T>, b: &Seq<T>) -> Result<(N, Alignment<T>)>
+  pub fn align<T>(self, a: &Seq<T>, b: &Seq<T>) -> Result<Alignment<N, T>>
   where
     u8: From<T>,
     T: From<u8> + Copy + Gap,
@@ -139,7 +139,11 @@ where
       }
     }
 
-    Ok((score, Alignment::new(aa, ba)))
+    Ok(Alignment {
+      score,
+      a: aa,
+      b: ba,
+    })
   }
 }
 
@@ -166,14 +170,14 @@ mod tests {
     let seq1: Dna = Dna::try_from("GCATGCG").unwrap();
     let seq2: Dna = Dna::try_from("GATTACA").unwrap();
 
-    let (score, alignment) = nw.align(&seq1, &seq2)?;
+    let aligned = nw.align(&seq1, &seq2)?;
 
     let seq1_aligned: Dna = Dna::try_from("GCA-TGCG").unwrap();
     let seq2_aligned: Dna = Dna::try_from("G-ATTACA").unwrap();
 
-    assert_eq!(score, 0.0);
-    assert_eq!(alignment.a(), &seq1_aligned);
-    assert_eq!(alignment.b(), &seq2_aligned);
+    assert_eq!(aligned.score, 0.0);
+    assert_eq!(aligned.a, seq1_aligned);
+    assert_eq!(aligned.b, seq2_aligned);
 
     Ok(())
   }
@@ -186,7 +190,7 @@ mod tests {
     let seq1_aligned: Dna = Dna::try_from("--AGACTAGTTAC").unwrap();
     let seq2_aligned: Dna = Dna::try_from("CGAGAC--G-T--").unwrap();
 
-    let (score, alignment) = NeedlemanWunsch::new()
+    let aligned = NeedlemanWunsch::new()
       .similarity_matrix::<dna::Base>(vec![
         vec![5.0, -5.0, -5.0, -5.0],
         vec![-5.0, 5.0, -5.0, -5.0],
@@ -196,11 +200,9 @@ mod tests {
       .gap_penalty(-2.0)
       .align(&seq1, &seq2)?;
 
-    // println!("{:?}", alignment);
-
-    assert_eq!(score, 16.0);
-    assert_eq!(alignment.a(), &seq1_aligned);
-    assert_eq!(alignment.b(), &seq2_aligned);
+    assert_eq!(aligned.score, 16.0);
+    assert_eq!(aligned.a, seq1_aligned);
+    assert_eq!(aligned.b, seq2_aligned);
 
     Ok(())
   }
@@ -226,10 +228,6 @@ mod tests {
     let start = Instant::now();
     nw.align(&seq1, &seq2)?;
     let duration = start.elapsed();
-
-    // println!("1x =\t{:?}", duration);
-    // println!("1000x =\t{:?}", duration * 1000);
-
     assert!(duration.as_millis() < 25);
     Ok(())
   }

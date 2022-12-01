@@ -60,7 +60,7 @@ where
     self
   }
 
-  pub fn align<T>(self, a: &Seq<T>, b: &Seq<T>) -> Result<(N, Alignment<T>)>
+  pub fn align<T>(self, a: &Seq<T>, b: &Seq<T>) -> Result<Alignment<N, T>>
   where
     u8: From<T>,
     T: From<u8> + Copy + Gap + Debug,
@@ -142,7 +142,11 @@ where
       }
     }
 
-    Ok((*score, Alignment::new(aa, ba)))
+    Ok(Alignment {
+      score: *score,
+      a: aa,
+      b: ba,
+    })
   }
 }
 
