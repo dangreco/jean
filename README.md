@@ -44,8 +44,8 @@ $ cargo add jean # --features io,...
       </td>
     </tr>
     <tr>
-      <td><code>bolsum</code></td>
-      <td>BOLSUM substitution matrices</td>
+      <td><code>blosum</code></td>
+      <td>BLOSUM substitution matrices</td>
       <td>
         (<a href="">Documentation</a>)
       </td>
