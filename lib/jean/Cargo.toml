@@ -5,6 +5,7 @@ version = "0.1.0"
 
 [dependencies]
 jean_alignment = {version = "0.1.0", optional = true, path = "../jean_alignment"}
+jean_blast = {version = "0.1.0", optional = true, path = "../jean_blast"}
 jean_core = {version = "0.1.0", path = "../jean_core"}
 jean_cut = {version = "0.1.0", path = "../jean_cut"}
 jean_io = {version = "0.1.0", optional = true, path = "../jean_io"}
@@ -12,10 +13,12 @@ jean_macros = {version = "0.1.0", optional = true, path = "../jean_macros"}
 
 [dev-dependencies]
 jean_alignment = {version = "0.1.0", path = "../jean_alignment"}
+jean_blast = {version = "0.1.0", path = "../jean_blast"}
 jean_io = {version = "0.1.0", path = "../jean_io"}
 jean_macros = {version = "0.1.0", path = "../jean_macros"}
 
 [features]
 alignment = ["jean_alignment"]
+blast = ["jean_blast"]
 io = ["jean_io"]
 macros = ["jean_macros"]
