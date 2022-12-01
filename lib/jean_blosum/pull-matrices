@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Check for wget
+if ! hash wget &> /dev/null
+then
+  echo "wget not installed!"
+  exit 1
+fi
+
+# Create tmp folder
+tmp="$(mktemp -d "${TMPDIR:-/tmp}"/tmp.XXXXXXXX)"
+out=src
+
+# Download latest BLOSUM matrices
+wget -q --show-progress --cut-dirs=3 --reject cdi,matrices,tar.gz --directory-prefix=$tmp -r -nH -nc ftp://ftp.ncbi.nlm.nih.gov/blast/matrices
+
+mkdir -p $out/matrices
+
+cargo run --features codegen $tmp

@@ -1,0 +1,35 @@
+[package]
+edition = "2021"
+name = "jean_blosum"
+version = "0.1.0"
+
+[dependencies]
+anyhow = {version = "1.0.66", optional = true}
+clap = {version = "4.0.29", optional = true, features = ["derive"]}
+jean_core = {version = "0.1.0", path = "../jean_core"}
+pest = {version = "2.5.0", optional = true}
+pest_derive = {version = "2.5.0", optional = true}
+
+[dev-dependencies]
+anyhow = "1.0.66"
+clap = {version = "4.0.29", features = ["derive"]}
+pest = {version = "2.5.0"}
+pest_derive = {version = "2.5.0"}
+
+[lib]
+bench = true
+doc = true
+doctest = false
+name = "jean_blosum"
+path = "src/lib.rs"
+test = true
+
+[[bin]]
+bench = false
+name = "codgen"
+path = "src/codegen/main.rs"
+required-features = ["codegen"]
+test = false
+
+[features]
+codegen = ["clap", "pest", "pest_derive", "anyhow"]

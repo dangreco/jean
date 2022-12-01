@@ -4,4 +4,4 @@ name = "alignment"
 version = "0.1.0"
 
 [dependencies]
-jean = {version = "0.1.0", path = "../../lib/jean", features = ["alignment", "macros"]}
+jean = {version = "0.1.0", path = "../../lib/jean", features = ["alignment", "macros", "blosum"]}

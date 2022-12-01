@@ -7,8 +7,8 @@ extern crate jean_io;
 #[cfg(feature = "jean_alignment")]
 extern crate jean_alignment;
 
-#[cfg(feature = "jean_blast")]
-extern crate jean_blast;
+#[cfg(feature = "jean_blosum")]
+extern crate jean_blosum;
 
 /* ---- BEGIN CRATE ROOT ---- */
 pub use jean_core::sequence::*;
@@ -27,9 +27,6 @@ pub mod prelude {
 
   #[cfg(feature = "jean_alignment")]
   pub use jean_alignment::prelude::*;
-
-  #[cfg(feature = "jean_blast")]
-  pub use jean_blast::prelude::*;
 }
 
 /// Codon usage tables (codon frequency tables)
@@ -49,8 +46,8 @@ pub mod alignment {
   pub use jean_alignment::alignment::*;
 }
 
-#[cfg(feature = "jean_blast")]
-/// BLAST (basic local alignment search tool)
-pub mod blast {
-  pub use jean_blast::blast::*;
+#[cfg(feature = "jean_blosum")]
+/// BLOSUM substitution matrices
+pub mod blosum {
+  pub use jean_blosum::*;
 }

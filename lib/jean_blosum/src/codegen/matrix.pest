@@ -1,0 +1,12 @@
+WHITESPACE = _{ " " | "\t" }
+COMMENT = _{ "#" ~ (!NEWLINE ~ ANY)* }
+
+int = @{ "-"? ~ ASCII_DIGIT+ }   
+amino = @{ ASCII_ALPHA_UPPER | "*" }
+
+header = { amino{2,} }
+row = { amino ~ int+ }
+
+item = _{ COMMENT | header | row }
+
+file = _{ SOI ~ NEWLINE* ~ (item ~ NEWLINE+)* ~ NEWLINE? ~ EOI }
