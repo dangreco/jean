@@ -35,14 +35,21 @@ $ cargo add jean # --features io,...
       <td>
         (<a href="">Documentation</a>)
       </td>
-    </tr
+    </tr>
     <tr>
       <td><code>alignment</code></td>
       <td>Sequence alignment tools</td>
       <td>
         (<a href="">Documentation</a>)
       </td>
-    </tr
+    </tr>
+    <tr>
+      <td><code>blast</code></td>
+      <td>BLAST (basic local alignment search tool)</td>
+      <td>
+        (<a href="">Documentation</a>)
+      </td>
+    </tr>
   </tbody>
 </table>
 
