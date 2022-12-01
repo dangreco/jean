@@ -1,7 +1,4 @@
-use std::{
-  collections::{BTreeMap, BTreeSet},
-  path::PathBuf,
-};
+use std::collections::{BTreeMap, BTreeSet};
 
 use anyhow::Result;
 use jean_core::sequence::{codon::Codon, protein::AminoAcid};
@@ -64,11 +61,13 @@ impl Cut {
     Self::read_str(buf.as_str())
   }
 
-  pub fn read_file(path: &PathBuf) -> Result<Self> {
+  pub fn read_file<P>(path: P) -> Result<Self>
+  where
+    P: AsRef<std::path::Path>,
+  {
     let mut file = std::fs::File::open(path)?;
     Self::read(&mut file)
   }
-
 
   pub fn frequency(&self, codon: &Codon) -> Option<f64> {
     self.entries[codon].frequency

@@ -8,7 +8,6 @@ use std::{
     BTreeMap,
   },
   fs::File,
-  path::PathBuf,
 };
 
 use anyhow::Result;
@@ -38,7 +37,10 @@ impl Gff3 {
     Self::read_str(str.as_str())
   }
 
-  pub fn read_file(path: &PathBuf) -> Result<Self> {
+  pub fn read_file<P>(path: P) -> Result<Self>
+  where
+    P: AsRef<std::path::Path>,
+  {
     let mut file = File::open(path)?;
     Self::read(&mut file)
   }

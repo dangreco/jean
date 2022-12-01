@@ -4,8 +4,7 @@ extern crate jean;
 use jean::{cut::Cut, dna::Dna, prelude::*, protein::Protein, rna::Rna};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-  let path = std::path::PathBuf::from("homo_sapien.cut");
-  let cut = Cut::read_file(&path)?;
+  let cut = Cut::read_file("homo_sapien.cut")?;
 
   /* DNA -> RNA -> Protein */
   let d: Dna = dna!("AGGCTGGGCACC");
